@@ -180,24 +180,33 @@
     <section
       v-for="[countryCode, country] in sortedDataGroupedByCountry"
       :key="countryCode"
-      class="pa2 mv2 w-third dib"
+      class="pv2 ph4 mv0 w-third w-25-l dib"
     >
-      <section class="bt">
+      <section class="">
         <!-- <h2>{{ getCountryName(countryCode) }}</h2> -->
-        <h3 class="mv1">{{ country[0]?.Area }}</h3>
-        <h4 class="mv1 gray">
+        <!-- <h3 class="mv1">{{ country[0]?.Area }}</h3> -->
+        <h2 class="mv2 f2" v-if="country[0]">
+          <NuxtLink
+            :to="getCountryLink(country[0])"
+            class="link near-black underline"
+          >
+            <!-- {{ getCountryName(countryCode) }} -->
+            {{ country[0]?.Area }}
+          </NuxtLink>
+        </h2>
+        <h4 class="mv1 gray f3">
           {{ sortByToString(sortBy) }}
         </h4>
-        <h5 class="mv0 gray">
+        <h5 class="mv0 gray f4">
           {{ sortElementToString(sortByElement) }} in 2020:
-          <span class="mv1 dib pa2 bg-light-gray gray br2">
+          <span class="mv1 dib pv1 ph2 bg-light-gray gray br2">
             {{ getLatestValue(country) ? getLatestValue(country) : 'N/A' }}
           </span>
         </h5>
 
         <div
           :id="`country-${countryCode}-chart`"
-          class="country-chart w-100"
+          class="country-chart w-100 ba b--light-gray pa0"
         ></div>
         <!-- <section class="cf">
         <div
@@ -231,10 +240,17 @@ const sortOrder = ref('desc')
 const sortBy = ref('potash')
 const sortByElement = ref('production')
 
-const startYear = ref('2000')
+const startYear = ref('1970')
 const endYear = ref('2020')
 
 const numberFormat = format('.3s')
+
+function getCountryLink(country) {
+  if (!country) return '/'
+  const code = country['Area Code (M49)']
+  if (!code) return '/'
+  return `country-${code.toString()}/`
+}
 
 function sortByToString(sortBySlug) {
   //   <option value="nitrogen">Nutrient nitrogen N (total)</option>
@@ -278,7 +294,7 @@ function getLatestValue(country) {
 }
 
 const { data: fertilizerData } = await useFetch(
-  'Inputs_FertilizersNutrient_E_All_Data_(Normalized).csv'
+  '/Inputs_FertilizersNutrient_E_All_Data_(Normalized).csv'
 )
 
 // parse and remove "world" area
@@ -410,10 +426,15 @@ function makeLineChart(data) {
   const chart = Plot.plot({
     // y: { grid: true, domain: [0, 10000000] },
     y: { grid: true },
-    marginLeft: 82,
+    marginLeft: 72,
+    marginRight: 0,
+    marginBottom: 18,
+    marginTop: 0,
+    width: 300,
+    height: 200,
     color: {
       type: 'categorical',
-      legend: true,
+      // legend: true,
     },
     marks: [
       Plot.line(filteredData, {
