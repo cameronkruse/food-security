@@ -1,3 +1,5 @@
+#Outdated
+This repo will no longer be updated. Further work will be pushed to a fork of this repo within the earthrise-media Github Organization at [earthrise-media/food-security](https://github.com/earthrise-media/food-security).
 # Food Security Working Repo
 Visualizing data to better monitor issues around food security
 
